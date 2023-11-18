@@ -34,7 +34,6 @@ class CryptedJSONdb {
     };
     save() {
         try {
-            console.log(this.minifyJSON, this.minifyJSON ? 0 : 4);
             let dataToSave = JSON.stringify(this.data, null, this.minifyJSON ? 0 : 4);
             if (this.encryption) {
                 dataToSave = CryptoJS.AES.encrypt(dataToSave, this.databaseKey).toString();
