@@ -6,7 +6,7 @@ class CryptedJSONdb {
         this.filename = filename;
         this.encryption = options.encryption || false;
         this.databaseKey = options.key || '';
-        this.minifyJSON = options.minify || true;
+        this.minifyJSON = options.minify;
         this.data = {};
         this.load();
     };
@@ -34,6 +34,7 @@ class CryptedJSONdb {
     };
     save() {
         try {
+            console.log(this.minifyJSON, this.minifyJSON ? 0 : 4);
             let dataToSave = JSON.stringify(this.data, null, this.minifyJSON ? 0 : 4);
             if (this.encryption) {
                 dataToSave = CryptoJS.AES.encrypt(dataToSave, this.databaseKey).toString();
