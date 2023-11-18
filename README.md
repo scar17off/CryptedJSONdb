@@ -12,7 +12,8 @@ CryptedJSONdb can store configuration data, update settings, and any other data 
 const CryptedJSONdb = require("cryptedjsondb");
 const db = new CryptedJSONdb('./data.json', {
     encryption: true,
-    key: "your secret key"
+    key: "your secret key",
+    minify: true
 });
 
 // set a value
