@@ -1,7 +1,20 @@
 const CryptoJS = require('crypto-js');
 const fs = require('fs');
 
+/**
+ * Represents an encrypted JSON database.
+ * @class
+ */
 class CryptedJSONdb {
+    /**
+     * Creates an instance of CryptedJSONdb.
+     * @constructor
+     * @param {string} filename - The name of the file to store the JSON data.
+     * @param {Object} [options={}] - Additional options for the database.
+     * @param {boolean} [options.encryption=false] - Indicates whether encryption is enabled.
+     * @param {string} [options.key=''] - The encryption key.
+     * @param {boolean} [options.minify] - Indicates whether to minify the JSON data.
+     */
     constructor(filename, options = {}) {
         this.filename = filename;
         this.encryption = options.encryption || false;
@@ -10,6 +23,10 @@ class CryptedJSONdb {
         this.data = {};
         this.load();
     };
+    /**
+     * Loads data from the file into the database instance.
+     * @private
+     */
     load() {
         try {
             if(!fs.existsSync('./' + this.filename)) {
@@ -32,6 +49,10 @@ class CryptedJSONdb {
             console.log('Error loading data:', error);
         };
     };
+    /**
+     * Saves the current database state to the file.
+     * @private
+     */
     save() {
         try {
             let dataToSave = JSON.stringify(this.data, null, this.minifyJSON ? 0 : 4);
@@ -43,6 +64,12 @@ class CryptedJSONdb {
             console.log('Error saving data:', error);
         };
     };
+    /**
+     * Sets a value in the database based on the provided keys.
+     * @param {*} value - The value to set.
+     * @param {...string} keys - The keys to navigate the nested structure.
+     * @returns {boolean} - Indicates whether the value was successfully set.
+     */
     setValue(value, ...keys) {
         let obj = this.data;
         for(let i = 0; i < keys.length - 1; i++) {
@@ -57,6 +84,11 @@ class CryptedJSONdb {
         this.save();
         return true;
     };
+    /**
+     * Retrieves a value from the database based on the provided keys.
+     * @param {...string} keys - The keys to navigate the nested structure.
+     * @returns {*} - The retrieved value.
+     */
     getValue(...keys) {
         let obj = this.data;
         for(let i = 0; i < keys.length; i++) {
@@ -67,6 +99,11 @@ class CryptedJSONdb {
         };
         return obj;
     };
+    /**
+     * Retrieves a value from the database based on the provided path.
+     * @param {...string} path - The path to the desired value.
+     * @returns {*} - The retrieved value.
+     */
     getPath(...path) {
         let obj = this.getValue(...path);
         return obj;
