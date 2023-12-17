@@ -67,35 +67,6 @@ class CryptedJSONdb {
         };
         return obj;
     };
-    deleteKey(key, ...keys) {
-        let obj = this.data;
-        if (!keys.length) {
-            delete obj[key];
-        } else {
-            for(let i = 0; i < keys.length - 1; i++) {
-                if(!obj[keys[i]]) {
-                    return;
-                }
-                obj = obj[keys[i]];
-            };
-            delete obj[keys[keys.length - 1]][key];
-        };
-        this.save();
-    };
-    addKeyToArr(value, ...keys) {
-        let arr = this.getValue(...keys);
-        if (!Array.isArray(arr)) arr = [];
-        arr.push(value);
-        this.setValue(arr, ...keys);
-    };
-    getItemByIndex(index, ...keys) {
-        const arr = this.getValue(...keys);
-        if (Array.isArray(arr) && index >= 0 && index < arr.length) {
-            return arr[index];
-        } else {
-            return undefined;
-        };
-    };
     getPath(...path) {
         let obj = this.getValue(...path);
         return obj;
